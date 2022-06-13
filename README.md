@@ -25,6 +25,7 @@ gdb-kernel   gdb-multiarch start within configs in ./.gdb-kernel.config
 [key]
 reset        Making some preparation for Pwn exploit
 clean        Cleaning up something useless like gdb_history and DS_store etc.
+libc         Change ELF shared library link
 
 [example]
 pwn-envset --binary reset
@@ -34,6 +35,4 @@ pwn-envset --kernel clean
 
 key "libc" is based on my another repositories https://github.com/kagehutatsu/set-libc
 
-It is unable to be used conveniently and still need to be updated
-
-By the way, bash_competition is on the way
+It's never finished, and I will edit it for a long time
