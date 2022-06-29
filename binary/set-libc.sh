@@ -2,6 +2,7 @@
 
 libc_path=~/Program/glibc-all-in-one/libs/
 binary_path=$(pwd)
+binary_file=$1
 
 get_libc_list()
 {
@@ -28,7 +29,7 @@ get_libc_list()
 
 get_binary_arch()
 {
-	file_info=$(file ${binary_path}/main)	
+	file_info=$(file ${binary_path}/$binary_file)	
 
 	if [[ $file_info =~ "x86-64" ]]; then
 		arch="amd64"
@@ -42,15 +43,15 @@ get_binary_arch()
 
 get_current_binary_libc()
 {
-	current_binary_libc_info=$(readelf -d $binary_path/main)
-	current_binary_libc=${current_binary_libc_info%libc.so.6*}
+	current_binary_libc_info=$(readelf -d $binary_path/$binary_file)
+	current_binary_libc=${current_binary_libc_info%]*}
 	current_binary_libc=${current_binary_libc##*[}
-	current_binary_libc=${current_binary_libc}libc.so.6
+	current_binary_libc=${current_binary_libc}
 	
-	current_binary_ld_info=$(readelf -l $binary_path/main)
-	current_binary_ld=${current_binary_ld_info%ld-linux-x86-64.so.2*}
+	current_binary_ld_info=$(readelf -l $binary_path/$binary_file)
+	current_binary_ld=${current_binary_ld_info%]*}
 	current_binary_ld=${current_binary_ld#*/}
-	current_binary_ld=/${current_binary_ld}ld-linux-x86-64.so.2
+	current_binary_ld=/${current_binary_ld}
 }
 
 get_user_libc_mode()
@@ -83,12 +84,12 @@ get_user_libc_version_choice()
 create_patchelf_command()
 {
 	if [[ $user_libc_mode = local-mode ]]; then
-		patch_libc_cmd="patchelf --replace-needed "${current_binary_libc}" "$binary_path"/libc-"${libc_list[user_libc_version_choice]%-*}".so main"
+		patch_libc_cmd="patchelf --replace-needed "${current_binary_libc}" "$binary_path"/libc-"${libc_list[user_libc_version_choice]%-*}".so $binary_file"
 	elif [[ $user_libc_mode = global-mode ]]; then
-		patch_libc_cmd="patchelf --replace-needed "${current_binary_libc}" "$libc_path${libc_list[user_libc_version_choice]}"_"$arch"/libc.so.6 main"
+		patch_libc_cmd="patchelf --replace-needed "${current_binary_libc}" "$libc_path${libc_list[user_libc_version_choice]}"_"$arch"/libc.so.6 $binary_file"
 	fi
 	
-	patch_ld_cmd="patchelf --set-interpreter  "$libc_path${libc_list[user_libc_version_choice]}"_"$arch"/ld-linux-x86-64.so.2 main"
+	patch_ld_cmd="patchelf --set-interpreter  "$libc_path${libc_list[user_libc_version_choice]}"_"$arch"/ld-linux-x86-64.so.2 $binary_file"
 }
 
 exec_patchelf()

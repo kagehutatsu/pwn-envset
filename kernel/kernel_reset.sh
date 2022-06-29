@@ -1,6 +1,7 @@
 #!/bin/bash
 
-set -e
+shell_path=$(realpath $0)
+base_path=${shell_path%/*}
 
 pwd=$(pwd)
 
@@ -19,8 +20,6 @@ if [ ! $archive_fileheader ]; then
 	exit
 fi
 
-cp ./$archive_filename ./.archive_backup
-
 if [ ! -d $archive_fileheader ]; then
 	file_info=$(file $archive_filename)
 	if [[ $file_info =~ "gzip" ]]; then
@@ -32,19 +31,6 @@ if [ ! -d $archive_fileheader ]; then
 	cpio -idm < ../$archive_filename
 fi
 
-if [ ! $kmod_name ]; then
-	for kmod_file in $(find ./ -name "*.ko")
-	do
-		cp $kmod_file ../
-		kmod_name=${file##*/}
-		break
-	done
-fi
+cp $base_path/kernel/reset-file/gdb.script ./
 
-cd $pwd
-
-touch .gdb-kernel.config
-echo -e "kernel_base=\"\"" >>.gdb-kernel.config
-echo -e "kmod_base=\"\"" >>.gdb-kernel.config
-echo -e "kmod_name=\"${kmod_name}\"" >>.gdb-kernel.config
-echo -e "breakpoint=\"\"" >>.gdb-kernel.config
+cp $base_path/kernel/reset-file/gdb.script ./

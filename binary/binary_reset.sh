@@ -1,20 +1,20 @@
 #!/bin/bash
 
-set -e
+binary_file=$1
 
 if [ -e exp.py ]; then
 	echo "Exp File Has Existed"
 	exit
 fi
 
-if [ ! -e main ]; then
-	echo "Main File Not Found"
+if [ ! -e $binary_file ]; then
+	echo "Binary File Not Found"
 	exit
-elif [ ! -x main ]; then
-	chmod a+x main
+elif [ ! -x $binary_file ]; then
+	chmod a+x $binary_file
 fi
 
-file_info=$(file main)
+file_info=$(file $binary_file)
 
 if [[ $file_info =~ "x86-64" ]]; then
 	arch="x86-64"
@@ -34,23 +34,23 @@ case $arch in
 	"x86-64")
 		touch exp.py
 		echo "from pwn import*" >>exp.py
-		echo "r=process('./main')" >>exp.py
+		echo "r=process('./$binary_file')" >>exp.py
 		echo -e "context.log_level='debug'\n\n\n" >>exp.py
 		echo "r.interactive()" >>exp.py
 	;;
 	"Arm")
 		touch exp.py
 		echo "from pwn import*" >>exp.py
-		echo "#r=process(['qemu-arm','-g','1234','-L','/usr/arm-linux-gnueabi/','./main'])" >>exp.py
-		echo "r=process(['qemu-arm','-L','/usr/arm-linux-gnueabi/','./main'])" >>exp.py
+		echo "#r=process(['qemu-arm','-g','1234','-L','/usr/arm-linux-gnueabi/','./$binary_file'])" >>exp.py
+		echo "r=process(['qemu-arm','-L','/usr/arm-linux-gnueabi/','./$binary_file'])" >>exp.py
 		echo -e "context(os='linux',arch='arm',log_level='debug')\n\n\n" >>exp.py
 		echo "r.interactive()" >>exp.py
 	;;
 	"aarch64")
 		touch exp.py
 		echo "from pwn import*" >>exp.py
-		echo "#r=process(['qemu-aarch64','-g','1234','-L','/usr/aarch64-linux-gnu/','./main'])" >>exp.py
-		echo "r=process(['qemu-aarch64','-L','/usr/aarch64-linux-gnu/','./main'])" >>exp.py
+		echo "#r=process(['qemu-aarch64','-g','1234','-L','/usr/aarch64-linux-gnu/','./$binary_file'])" >>exp.py
+		echo "r=process(['qemu-aarch64','-L','/usr/aarch64-linux-gnu/','./$binary_file'])" >>exp.py
 		echo -e "context(os='linux',arch='aarch64',log_level='debug')\n\n\n" >>exp.py
 		echo "r.interactive()" >>exp.py
 	;;
