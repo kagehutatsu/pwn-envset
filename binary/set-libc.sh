@@ -1,6 +1,6 @@
 #!/bin/bash
 
-libc_path=~/Program/glibc-all-in-one/libs/
+libc_path=~/Programs/glibc-all-in-one/libs/
 binary_path=$(pwd)
 binary_file=$1
 
