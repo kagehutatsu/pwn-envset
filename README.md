@@ -2,8 +2,6 @@
 
 A small tools for pwn
 
-Easy to use and easy to understand
-
 ```
 [install]
 sudo ./install.sh
@@ -32,7 +30,3 @@ pwn-envset --binary reset
 
 pwn-envset --kernel clean
 ```
-
-key "libc" is based on my another repositories https://github.com/kagehutatsu/set-libc
-
-It's never finished, and I will edit it for a long time

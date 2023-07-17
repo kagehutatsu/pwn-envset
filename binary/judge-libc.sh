@@ -1,6 +1,6 @@
 #!/bin/bash
 
-global_libc_path=~/Program/glibc-all-in-one/libs/
+global_libc_path=~/Programs/glibc-all-in-one/libs/
 local_libc_path=$1
 
 if [[ ! -e $1 ]]; then
