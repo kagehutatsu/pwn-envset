@@ -7,8 +7,8 @@ base_path=${shell_path%/*}
 function binary_envset()
 {
 	case $1 in
-		"reset")
-			exec ${base_path}/binary/binary_reset.sh $2
+		"init")
+			exec ${base_path}/binary/binary_init.sh $2
 		;;
 		"set-libc")
 			exec ${base_path}/binary/set-libc.sh $2
@@ -28,8 +28,8 @@ function binary_envset()
 function kernel_envset()
 {
 	case $1 in
-		"reset")
-			exec ${base_path}/kernel/kernel_reset.sh
+		"init")
+			exec ${base_path}/kernel/kernel_init.sh
 		;;
 		"clean")
 			exec ${base_path}/kernel/kernel_clean.sh

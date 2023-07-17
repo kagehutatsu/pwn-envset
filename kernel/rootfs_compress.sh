@@ -1,9 +1,37 @@
 #!/bin/bash
 
-if [ -f Makefile ];then
-	make
-	cp main ./rootfs
-fi
+function analyse_argv()
+{
+	argv=`getopt -o m:s: -- "$@"`
+
+	eval set -- "${argv}"
+
+	while [ -n "$1" ]
+	do
+		case $1 in
+			-m)
+				if [ -f Makefile ];then
+					make
+					cp main ./rootfs
+				fi
+				shift
+			;;
+			-s)
+				exec $2
+				shift
+			;;
+			--)
+				shift
+				break
+			;;
+			*)
+				echo "Invalid option $1"
+				exit
+			;;
+		esac
+		shift
+	done
+}
 
 for file in `ls `
 do

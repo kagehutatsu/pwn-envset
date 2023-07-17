@@ -9,4 +9,4 @@ if [ ! -e $script_file ]; then
 fi
 
 gdb-multiarch \
-	-ex "source .script_file"
+	-ex "source "$script_file
