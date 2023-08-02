@@ -33,6 +33,8 @@ function analyse_argv()
 	done
 }
 
+analyse_argv
+
 for file in `ls `
 do
 	if [[ $file =~ \.sh$ ]];then

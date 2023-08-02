@@ -12,12 +12,12 @@ __pwn-envset()
 			"-k")
 			;&
 			"--kernel")
-				cmdlist="reset clean"
+				cmdlist="init clean"
 			;;
 			"-b")
 			;&
 			"--binary")
-				cmdlist="reset clean set-libc judge-libc"
+				cmdlist="init clean set-libc judge-libc"
 			;;
 		esac
 		
@@ -26,7 +26,7 @@ __pwn-envset()
 			;&
 			"--kernel")
 				case $cmd in
-					"reset")
+					"init")
 						cmdlist=$(ls)
 					;;
 				esac
@@ -35,7 +35,7 @@ __pwn-envset()
 			;&
 			"--binary")
 				case $cmd in
-					"reset")
+					"init")
 					;&
 					"set-libc")
 					;&
